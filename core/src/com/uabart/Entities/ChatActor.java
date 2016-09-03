@@ -107,7 +107,7 @@ public class ChatActor extends Actor {
 	}
 
 	public void setLastMessage(String lastMessage) {
-		if (lastMessage.charAt(0) == '!') {
+		if (!lastMessage.equals("") && lastMessage.charAt(0) == '!') {
 			executeCommand(lastMessage);
 		} else {
 			this.lastMessage = lastMessage;

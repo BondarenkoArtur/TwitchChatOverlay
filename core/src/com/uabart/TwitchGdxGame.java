@@ -8,13 +8,21 @@ import org.jibble.pircbot.User;
 
 public class TwitchGdxGame extends ApplicationAdapter {
 
+	String channel = null;
 	RenderHelper render;
 	IrcHelper ircHelper;
+
+	public TwitchGdxGame(String channel) {
+		this.channel = channel;
+	}
+
+	public TwitchGdxGame() {
+	}
 
 	@Override
 	public void create() {
 		render = new RenderHelper();
-		ircHelper = new IrcHelper() {
+		ircHelper = new IrcHelper(channel) {
 			@Override
 			protected void onJoin(String channel, String sender, String login, String hostname) {
 				super.onJoin(channel, sender, login, hostname);

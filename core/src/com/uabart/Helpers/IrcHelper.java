@@ -14,14 +14,17 @@ public class IrcHelper extends PircBot {
 	public static final String BOT_NAME = "uaBArtBot";
 	public static final String BOT_OAUTH = "oauth:9ldmg9z1p0uesld6gpa0cqn3i2btkt";
 	public static final boolean IS_DEBUG_MODE = true;
+	private final String tempChannel;
 
 	public IrcHelper() {
+		this(CHANNEL);
+	}
 
-		// debugging output
+	public IrcHelper(String channel) {
+		this.tempChannel = channel;
 		this.setVerbose(IS_DEBUG_MODE);
 
 		this.setName(BOT_NAME);
-		// Connect to the IRC server.
 		try {
 			this.connect("irc.twitch.tv", 6667, BOT_OAUTH);
 			this.sendRawLine("CAP REQ :twitch.tv/membership");
@@ -31,12 +34,20 @@ public class IrcHelper extends PircBot {
 			e.printStackTrace();
 		}
 
-		// Join the #uabart channel.
-		this.joinChannel(CHANNEL);
+		if (tempChannel != null) {
+			this.joinChannel(tempChannel);
+		} else {
+			this.joinChannel(CHANNEL);
+		}
 	}
 
 	public List<String> getUserList() {
-		User[] users = getUsers(CHANNEL);
+		User[] users;
+		if (tempChannel != null) {
+			users = getUsers(tempChannel);
+		} else {
+			users = getUsers(CHANNEL);
+		}
 		List<String> list = new ArrayList<String>();
 		for (User user : users) {
 			list.add(user.getNick());

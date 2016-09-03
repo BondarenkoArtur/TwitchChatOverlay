@@ -9,6 +9,10 @@ public class DesktopLauncher {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 		config.width = 640;
 		config.height = 360;
-		new LwjglApplication(new TwitchGdxGame(), config);
+		try {
+			new LwjglApplication(new TwitchGdxGame(arg[0]), config);
+		} catch (Exception e) {
+			new LwjglApplication(new TwitchGdxGame(), config);
+		}
 	}
 }
