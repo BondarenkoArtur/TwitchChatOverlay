@@ -33,11 +33,19 @@ public class ChatActor extends Actor {
 	}
 
 	public ChatActor(String userName) {
-		color = new Color(MathUtils.random(), MathUtils.random(), MathUtils.random(), 1f);
+		color = getRandomNotGreenColor();
 		this.setName(userName);
 		this.setX(MathUtils.random(DEFAULT_MIN_X, DEFAULT_MAX_X));
 		this.setY(MathUtils.random(DEFAULT_MIN_Y, DEFAULT_MAX_Y));
 		setDefaultTexturePath();
+	}
+
+	private Color getRandomNotGreenColor() {
+		Color randomColor = new Color(MathUtils.random(), MathUtils.random(), MathUtils.random(), 1f);
+		if (randomColor.g > 0.8f && randomColor.r < 0.4f && randomColor.b < 0.4f) {
+			randomColor = getRandomNotGreenColor();
+		}
+		return randomColor;
 	}
 
 	@Override
@@ -61,7 +69,13 @@ public class ChatActor extends Actor {
 	}
 
 	public void moveSomewhere() {
-		moveSomewhere(DEFAULT_MIN_X, DEFAULT_MAX_X, DEFAULT_MIN_Y, DEFAULT_MAX_Y, RANDOM_MOVE_RADIUS, 1f);
+		float radius;
+		if (MathUtils.randomBoolean(0.1f)) {
+			radius = RANDOM_MOVE_RADIUS;
+		} else {
+			radius = 0f;
+		}
+		moveSomewhere(DEFAULT_MIN_X, DEFAULT_MAX_X, DEFAULT_MIN_Y, DEFAULT_MAX_Y, radius, 2f);
 	}
 
 	public void moveSomewhere(float minX, float maxX, float minY, float maxY, float radius, float duration) {
@@ -93,11 +107,19 @@ public class ChatActor extends Actor {
 	}
 
 	public void setLastMessage(String lastMessage) {
-		this.lastMessage = lastMessage;
+		if (lastMessage.charAt(0) == '!') {
+			executeCommand(lastMessage);
+		} else {
+			this.lastMessage = lastMessage;
+		}
 		if (lastMessage.contains("Kappa")) {
 			setUserTexturePath("kappa.png");
 		}
 		resetUser();
+	}
+
+	private void executeCommand(String command) {
+		// TODO: 9/3/16 executor for commands
 	}
 
 	public void resetUser() {
