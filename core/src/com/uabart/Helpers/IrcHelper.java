@@ -5,6 +5,7 @@ import org.jibble.pircbot.PircBot;
 import org.jibble.pircbot.User;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,6 +26,11 @@ public class IrcHelper extends PircBot {
 		this.setVerbose(IS_DEBUG_MODE);
 
 		this.setName(BOT_NAME);
+		try {
+			this.setEncoding("utf-8");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
 		try {
 			this.connect("irc.twitch.tv", 6667, BOT_OAUTH);
 			this.sendRawLine("CAP REQ :twitch.tv/membership");
