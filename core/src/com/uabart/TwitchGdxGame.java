@@ -1,25 +1,20 @@
 package com.uabart;
 
 import com.badlogic.gdx.ApplicationAdapter;
-import com.badlogic.gdx.Gdx;
 import com.uabart.Helpers.IrcHelper;
 import com.uabart.Helpers.RenderHelper;
 
 import org.jibble.pircbot.User;
 
-import java.util.List;
-
-
 public class TwitchGdxGame extends ApplicationAdapter {
 
 	RenderHelper render;
 	IrcHelper ircHelper;
-	List<String> userList;
 
 	@Override
 	public void create() {
 		render = new RenderHelper();
-		ircHelper = new IrcHelper(){
+		ircHelper = new IrcHelper() {
 			@Override
 			protected void onJoin(String channel, String sender, String login, String hostname) {
 				super.onJoin(channel, sender, login, hostname);
@@ -51,13 +46,13 @@ public class TwitchGdxGame extends ApplicationAdapter {
 		super.resize(width, height);
 	}
 
-	void refreshUsers(){
+	void refreshUsers() {
 		render.refreshUsers(ircHelper.getUserList());
 	}
 
 	@Override
 	public void render() {
-		render.render(Gdx.graphics.getDeltaTime());
+		render.render();
 	}
 
 	@Override
